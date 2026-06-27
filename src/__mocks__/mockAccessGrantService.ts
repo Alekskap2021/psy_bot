@@ -1,5 +1,3 @@
-import {createBot} from "../bot/bot";
-
 export const mockAccessGrant = {
     id: 1,
     telegramUserId: 0,

@@ -5,7 +5,7 @@ import type { Bot } from 'grammy'
 
 import { env } from '../config/env'
 import { paidAccessKeyboard } from '../bot/keyboards'
-import type { PaymentService } from '../payments/payment.service'
+import type { PaymentServiceLike } from '../bot/types'
 import {
   createResultSuccessResponse,
   type RobokassaResultPayload,
@@ -14,7 +14,7 @@ import { formatDateTime } from '../utils/time'
 
 export async function createHttpServer(params: {
   bot: Bot
-  paymentService: PaymentService
+  paymentService: PaymentServiceLike
 }) {
   const app = Fastify({
     logger: env.NODE_ENV !== 'test',
@@ -59,7 +59,7 @@ async function handleRobokassaResult(
   reply: FastifyReply,
   params: {
     bot: Bot
-    paymentService: PaymentService
+    paymentService: PaymentServiceLike
   },
 ) {
   const payload = parseRobokassaPayload(rawPayload)
