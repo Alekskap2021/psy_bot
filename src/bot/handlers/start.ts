@@ -30,12 +30,8 @@ export async function showStart(ctx: Context, services: BotServices): Promise<vo
     return
   }
 
-  // await ctx.reply(entrypoints.messages.welcome, {
-  //   reply_markup: mainMenuKeyboard(),
-  // })
 
-
-  await ctx.replyWithPhoto(new InputFile('assets/welcome.png'), {
+  await ctx.replyWithPhoto(new InputFile('assets/welcome.jpg'), {
     caption: entrypoints.messages.welcome,
     reply_markup: mainMenuKeyboard(),
   })
