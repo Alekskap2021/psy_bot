@@ -11,8 +11,7 @@ export const entrypoints = {
     contactUsername: 'Harva_aa',
   },
   product: {
-    amountRub: '10.00',
-    // amountRub: '1490.00',
+    amountRub: '1490.00',
     currency: 'RUB',
     description: 'Доступ к закрытому каналу с видеоматериалами',
     accessDurationDays: 30,
@@ -23,7 +22,7 @@ export const entrypoints = {
     pendingPaymentTtlMinutes: 30,
   },
   worker: {
-    expiryCheckIntervalMs: 60_000,
+    expiryCheckIntervalMs: 60_000 * 60,
   },
   buttons: {
     purchase: `⭐️  Получить доступ`,
