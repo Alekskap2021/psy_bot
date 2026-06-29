@@ -8,7 +8,7 @@ export const entrypoints = {
 
     // Test channel
     // privateChannelId: '-1003935621484',
-    // contactUsername: 'Harva_aa',
+    contactUsername: 'Harva_aa',
   },
   product: {
     amountRub: '10.00',
