@@ -4,14 +4,15 @@ export const entrypoints = {
   },
   telegram: {
     // Prod cannel
-    // privateChannelId: '-1004476190013',
+    privateChannelId: '-1004476190013',
 
     // Test channel
-    privateChannelId: '-1003935621484',
-    contactUsername: 'Harva_aa',
+    // privateChannelId: '-1003935621484',
+    // contactUsername: 'Harva_aa',
   },
   product: {
-    amountRub: '1490.00',
+    amountRub: '10.00',
+    // amountRub: '1490.00',
     currency: 'RUB',
     description: 'Доступ к закрытому каналу с видеоматериалами',
     accessDurationDays: 30,
