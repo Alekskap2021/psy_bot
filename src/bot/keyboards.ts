@@ -12,7 +12,7 @@ export const callbackData = {
 
 export function mainMenuKeyboard(): InlineKeyboard {
   return new InlineKeyboard()
-    .text(entrypoints.buttons.purchase, callbackData.purchase)
+    .text(entrypoints.buttons.purchase + ` (${entrypoints.product.amountRub} ₽)`, callbackData.purchase)
     .row()
     .text(entrypoints.buttons.faq, callbackData.faq)
     .row()
@@ -31,14 +31,14 @@ export function faqKeyboard(): InlineKeyboard {
 
 export function paidAccessKeyboard(inviteLink: string): InlineKeyboard {
   return new InlineKeyboard()
-    .url('Перейти в закрытый канал', inviteLink)
+    .url('🤫 Поговорим о том самом', inviteLink)
     .row()
     .text(entrypoints.buttons.backToMenu, callbackData.menu)
 }
 
 export function paymentKeyboard(paymentUrl: string): InlineKeyboard {
   return new InlineKeyboard()
-    .url('🚀  Перейти к оплате', paymentUrl)
+    .url(`🚀  Перейти к оплате (${entrypoints.product.amountRub} ₽)`, paymentUrl)
     .row()
     .text(entrypoints.buttons.backToMenu, callbackData.menu)
 }

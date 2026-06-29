@@ -37,13 +37,8 @@ export async function handlePurchase(
     return
   }
 
-  const prefix =
-    result.kind === 'existing_payment'
-      ? 'У вас уже есть активная ссылка на оплату.'
-      : 'Ссылка на оплату готова.'
-
   await ctx.reply(
-    `${prefix}\nСсылка действует до ${formatDateTime(result.payment.expiresAt)}.`,
+      '💳 Ссылка на оплату готова.' + '\n' + 'Остался один шаг - после оплаты вебинар сразу станет доступен.',
     {
       reply_markup: paymentKeyboard(result.paymentUrl),
     },

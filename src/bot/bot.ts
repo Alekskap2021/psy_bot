@@ -16,6 +16,16 @@ export function createBot(
     await showStart(ctx, services)
   })
 
+  bot.command('faq', async (ctx) => {
+    await showFaq(ctx)
+  })
+  bot.command('contact', async (ctx) => {
+    await showContact(ctx)
+  })
+  bot.command('purchase', async (ctx) => {
+    await handlePurchase(ctx, services)
+  })
+
   bot.callbackQuery(callbackData.menu, async (ctx) => {
     await ctx.answerCallbackQuery()
     await showMainMenu(ctx)
@@ -39,6 +49,16 @@ export function createBot(
     await ctx.answerCallbackQuery()
     await showContact(ctx)
   })
+
+  bot.on('message', async (ctx) => {
+    console.log(JSON.stringify(ctx.message, null, 2))
+  })
+
+  bot.on('channel_post', async (ctx) => {
+    console.log('CHANNEL_ID:', ctx.channelPost.chat.id)
+    console.log('CHANNEL_TITLE:', ctx.channelPost.chat.title)
+  })
+
 
   bot.catch((error) => {
     console.error('Telegram bot error', error)

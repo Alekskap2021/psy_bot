@@ -1,20 +1,20 @@
-import { createHash } from 'node:crypto'
+import { createHash } from 'node:crypto';
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('robokassa signatures', () => {
   beforeEach(() => {
-    vi.resetModules()
-    process.env.BOT_TOKEN = 'bot-token'
-    process.env.DATABASE_URL = 'postgres://user:pass@example.com/db'
-    process.env.ROBOKASSA_MERCHANT_LOGIN = 'merchant'
-    process.env.ROBOKASSA_PASSWORD_1 = 'password-1'
-    process.env.ROBOKASSA_PASSWORD_2 = 'password-2'
-    process.env.ROBOKASSA_TEST_MODE = 'true'
-  })
+    vi.resetModules();
+    process.env.BOT_TOKEN = 'bot-token';
+    process.env.DATABASE_URL = 'postgres://user:pass@example.com/db';
+    process.env.ROBOKASSA_MERCHANT_LOGIN = 'merchant';
+    process.env.ROBOKASSA_PASSWORD_1 = 'password-1';
+    process.env.ROBOKASSA_PASSWORD_2 = 'password-2';
+    process.env.ROBOKASSA_TEST_MODE = 'true';
+  });
 
   it('generates a payment URL with the expected password-1 signature', async () => {
-    const { createPaymentUrl } = await import('../src/payments/robokassa')
+    const { createPaymentUrl } = await import('../src/payments/robokassa');
 
     const url = new URL(
       createPaymentUrl({
@@ -22,16 +22,14 @@ describe('robokassa signatures', () => {
         amount: '100',
         description: 'Test payment',
       }),
-    )
+    );
 
-    expect(url.searchParams.get('SignatureValue')).toBe(
-      md5('merchant:100.00:42:password-1'),
-    )
-    expect(url.searchParams.get('IsTest')).toBe('1')
-  })
+    expect(url.searchParams.get('SignatureValue')).toBe(md5('merchant:100.00:42:password-1'));
+    expect(url.searchParams.get('IsTest')).toBe('1');
+  });
 
   it('validates ResultURL callbacks with the password-2 signature', async () => {
-    const { verifyResultSignature } = await import('../src/payments/robokassa')
+    const { verifyResultSignature } = await import('../src/payments/robokassa');
 
     expect(
       verifyResultSignature({
@@ -39,7 +37,7 @@ describe('robokassa signatures', () => {
         InvId: '42',
         SignatureValue: md5('100.00:42:password-2'),
       }),
-    ).toBe(true)
+    ).toBe(true);
 
     expect(
       verifyResultSignature({
@@ -47,10 +45,22 @@ describe('robokassa signatures', () => {
         InvId: '42',
         SignatureValue: md5('100.00:42:wrong-password'),
       }),
-    ).toBe(false)
-  })
-})
+    ).toBe(false);
+  });
+
+  it('uses the exact OutSum string from ResultURL when validating callbacks', async () => {
+    const { verifyResultSignature } = await import('../src/payments/robokassa');
+
+    expect(
+      verifyResultSignature({
+        OutSum: '5',
+        InvId: '3',
+        SignatureValue: md5('5:3:password-2'),
+      }),
+    ).toBe(true);
+  });
+});
 
 function md5(value: string): string {
-  return createHash('md5').update(value).digest('hex').toUpperCase()
+  return createHash('md5').update(value).digest('hex').toUpperCase();
 }

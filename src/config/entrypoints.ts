@@ -3,7 +3,11 @@ export const entrypoints = {
     publicBaseUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
   },
   telegram: {
-    privateChannelId: '-1000000000000',
+    // Prod cannel
+    // privateChannelId: '-1004476190013',
+
+    // Test channel
+    privateChannelId: '-1003935621484',
     contactUsername: 'Harva_aa',
   },
   product: {
@@ -21,7 +25,7 @@ export const entrypoints = {
     expiryCheckIntervalMs: 60_000,
   },
   buttons: {
-    purchase: '⭐️  Получить доступ',
+    purchase: `⭐️  Получить доступ`,
     faq: '❔  Часто задаваемые вопросы',
     contact: '👩🏼‍💻 Связаться со мной',
     backToMenu: '⬅️  Назад в меню',

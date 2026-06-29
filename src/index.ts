@@ -1,27 +1,27 @@
-// import { Bot } from 'grammy'
-//
-// import { AccessService } from './access/access.service'
-// import { startExpiryWorker } from './access/expiry.worker'
-// import { createBot } from './bot/bot'
-// import { UserService } from './bot/user.service'
-// import { env } from './config/env'
-// import { db } from './db/client'
-// import { createHttpServer } from './http/server'
-// import { PaymentService } from './payments/payment.service'
-
 import { Bot } from 'grammy'
+
+import { AccessService } from './access/access.service'
+import { startExpiryWorker } from './access/expiry.worker'
 import { createBot } from './bot/bot'
+import { UserService } from './bot/user.service'
 import { env } from './config/env'
+import { db } from './db/client'
 import { createHttpServer } from './http/server'
-import {mockPaymentService} from "./__mocks__/mockPaymentService"
-import {mockUserService} from "./__mocks__/mockUserService"
-import {mockAccessService} from "./__mocks__/mockAccessGrantService"
+import { PaymentService } from './payments/payment.service'
+//
+// import { Bot } from 'grammy'
+// import { createBot } from './bot/bot'
+// import { env } from './config/env'
+// import { createHttpServer } from './http/server'
+// import {mockPaymentService} from "./__mocks__/mockPaymentService"
+// import {mockUserService} from "./__mocks__/mockUserService"
+// import {mockAccessService} from "./__mocks__/mockAccessGrantService"
 
 async function main(): Promise<void> {
   const telegramBot = new Bot(env.BOT_TOKEN)
-  // const accessService = new AccessService(db, telegramBot.api)
-  // const paymentService = new PaymentService(db, accessService)
-  // const userService = new UserService(db)
+  const accessService = new AccessService(db, telegramBot.api)
+  const paymentService = new PaymentService(db, accessService)
+  const userService = new UserService(db)
 
 
 
@@ -32,22 +32,29 @@ async function main(): Promise<void> {
 
   const bot = createBot(
     {
-      accessService: mockAccessService,
-      paymentService: mockPaymentService,
-      userService: mockUserService,
+      accessService,
+      paymentService,
+      userService,
     },
+      // {
+    //   accessService: mockAccessService,
+    //   paymentService: mockPaymentService,
+    //   userService: mockUserService,
+    // },
     telegramBot,
   )
 
   const httpServer = await createHttpServer({
     bot,
-    paymentService: mockPaymentService,
+    paymentService,
+    // paymentService: mockPaymentService,
   })
 
+  const expiryWorker = startExpiryWorker(accessService)
   // const expiryWorker = startExpiryWorker(mockAccessService)
 
   const shutdown = async () => {
-    // clearInterval(expiryWorker)
+    clearInterval(expiryWorker)
     bot.stop()
     await httpServer.close()
   }
